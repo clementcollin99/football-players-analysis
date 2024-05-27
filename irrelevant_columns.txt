@@ -1,0 +1,11 @@
+Rk
+Player
+Nation
+Pos
+Squad
+Comp
+Age
+Born
+MP
+Starts
+90s
