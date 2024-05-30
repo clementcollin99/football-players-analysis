@@ -6,11 +6,11 @@ Identification of player clusters in the [2022-2023 European Leagues Player Stat
 
 It contains +2500 rows and 124 columns. Each entry corresponds to a player. The first few columns are qualitative variables describing the player (its name, age, club, etc.) and the rest are "in-game" statistics (number of chances created, goals scored, assists, etc.).
 
-## First task : players clustering
+## 1st task : players clustering
 
 The aim was to form clusters of players with similar statistics. Due to the large number of variables, we performed a PCA and then a K-means clustering.
 
-## Second task : find the best team possible
+## 2nd task : find the best team possible
 
 The goal was to find the best possible team based on a series of criteria such as number of goals scored, number of passes completed, etc. while minimizing its market value.
 
@@ -24,10 +24,10 @@ Once we had the players' values, we used a genetic algorithm to obtain an optima
 
 ## Drawbacks of our approach
 
-### Clustering
+<!-- ### Clustering
 
 - "bad" players are hard to classify. For instance, a striker who doesn't score goals might belong to the same cluster as defenders since the number of goals plays a big role in the clustering.
 
-### Value prediction + genetic algorithm
+### Value prediction + genetic algorithm -->
 
-- bad score for the value prediction using only the variables common to both datasets
+- poor score the value prediction using only variables common to both datasets
