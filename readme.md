@@ -4,7 +4,15 @@ Identification of player clusters in the [2022-2023 European Leagues Player Stat
 
 ## Rough description of the dataset
 
-It contains +2500 rows and 124 columns. Each entry corresponds to a player. Except a few columns describing the player (its name, age, club, etc.), the variables correspond to statistics (such as number of goals scored, number of assists made, etc.) for a set of soccer matches.
+It contains +2500 rows and 124 columns. Each entry corresponds to a player. The first few columns are qualitative variables describing the player (its name, age, club, etc.) and the rest are "in-game" statistics (number of chances created, goals scored, assists, etc.).
+
+## First task : players clustering
+
+## Second task : find the best team possible
+
+### Players value prediction
+
+### Genetic algorithm
 
 ## Limitations
 
