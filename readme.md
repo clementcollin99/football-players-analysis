@@ -8,12 +8,26 @@ It contains +2500 rows and 124 columns. Each entry corresponds to a player. The 
 
 ## First task : players clustering
 
+The aim was to form clusters of players with similar statistics. Due to the large number of variables, we performed a PCA and then a K-means clustering.
+
 ## Second task : find the best team possible
 
-### Players value prediction
+The goal was to find the best possible team based on a series of criteria such as number of goals scored, number of passes completed, etc. while minimizing its market value.
 
-### Genetic algorithm
+### Step 1 : players value prediction
 
-## Limitations
+As we didn't know the value of the players, we trained a model (RandomForest) to predict the value of a player based on his characteristics using another dataset.
 
-- "bad" players : a striker who doesn't score goals
+### Step 2 : genetic algorithm
+
+Once we had the players' values, we used a genetic algorithm to obtain an optimal team according to our objective function.
+
+## Drawbacks of our approach
+
+### Clustering
+
+- "bad" players are hard to classify. For instance, a striker who doesn't score goals might belong to the same cluster as defenders since the number of goals plays a big role in the clustering.
+
+### Value prediction + genetic algorithm
+
+- bad score for the value prediction using only the variables common to both datasets
