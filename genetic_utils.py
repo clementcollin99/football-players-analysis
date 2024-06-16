@@ -15,9 +15,17 @@ POSITIONS = {
 TO_KEEP = [
     "Player",
     "Goals",
-    "Assists",
+    "PasTotCmp",
+    "Int",
     "current_value",
 ]
+
+WEIGHTS = {
+    +0.4: "Goals",
+    +0.1: "PasTotCmp",  # passes completed
+    +0.1: "Int",  # interceptions
+    -0.4: "current_value",
+}
 
 
 def create_indiv(df: pd.DataFrame,
@@ -114,20 +122,21 @@ def mutate(indiv: dict,
 
 def objective(
     indiv: pd.DataFrame,
-    alpha: float = 0.5,
-    beta: float = 0.5,
+    weights: dict,
 ):
-    return alpha * indiv["Goals"].mean() - beta * indiv["current_value"].mean()
+    return np.sum(
+        [weight * indiv[var].mean() for weight, var in weights.items()])
 
 
 def evolution(
     df: pd.DataFrame,
     n_pop: int = 100,
     n_gen: int = 10,
+    weights: dict = WEIGHTS,
 ):
     pop = [create_indiv(df) for _ in range(n_pop)]
     for n in range(n_gen):
-        scores = [objective(indiv) for indiv in pop]
+        scores = [objective(indiv, weights) for indiv in pop]
         print("{:,.0f}th generation | average score : {:,.4f}".format(
             n + 1, np.mean(scores)))
         sorted_pop = [pop[pos] for pos in np.argsort([-s for s in scores])]
@@ -139,5 +148,5 @@ def evolution(
         pop = parents + children
 
     # at the end select the best individual(s)
-    scores = [objective(indiv) for indiv in pop]
+    scores = [objective(indiv, weights) for indiv in pop]
     return [pop[pos] for pos in np.argsort(scores)][0]
