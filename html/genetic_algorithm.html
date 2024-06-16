@@ -8018,12 +8018,14 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># normalize so that all columns have "the same weight" in the objective function</span>
-<span class="n">to_normalize</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Goals"</span><span class="p">,</span> <span class="s2">"current_value"</span><span class="p">]</span>
-<span class="n">other_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_normalize</span><span class="p">]</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">to_normalize</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># returns a numpy array</span>
+<span class="n">variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">WEIGHTS</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="n">other_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">variables</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">min_max_scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span>
 <span class="n">x_normalized</span> <span class="o">=</span> <span class="n">min_max_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">df_normalized</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x_normalized</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">to_normalize</span><span class="p">)</span>
+
+<span class="n">df_normalized</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x_normalized</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">variables</span><span class="p">)</span>
 <span class="n">df_normalized</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">other_columns</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df_normalized</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8051,16 +8053,16 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>1th generation | average score : -0.0091
-2th generation | average score : -0.0005
-3th generation | average score : 0.0051
-4th generation | average score : 0.0109
-5th generation | average score : 0.0173
-6th generation | average score : 0.0239
-7th generation | average score : 0.0306
-8th generation | average score : 0.0370
-9th generation | average score : 0.0446
-10th generation | average score : 0.0525
+<pre>1th generation | average score : 0.0010
+2th generation | average score : 0.0078
+3th generation | average score : 0.0123
+4th generation | average score : 0.0164
+5th generation | average score : 0.0201
+6th generation | average score : 0.0241
+7th generation | average score : 0.0294
+8th generation | average score : 0.0353
+9th generation | average score : 0.0416
+10th generation | average score : 0.0483
 </pre>
 </div>
 </div>
@@ -8074,7 +8076,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">best</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="p">[</span><span class="s2">"Player"</span><span class="p">]</span> <span class="o">+</span> <span class="n">to_keep_for_value_prediction</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'float_format'</span><span class="p">,</span> <span class="s1">'</span><span class="si">{:,.1f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">best</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="p">[</span><span class="s2">"Player"</span><span class="p">,</span> <span class="s2">"Age"</span><span class="p">,</span> <span class="s2">"MP"</span><span class="p">,</span> <span class="s2">"Pos"</span><span class="p">,</span> <span class="s2">"Goals"</span><span class="p">,</span> <span class="s2">"PasTotCmp"</span><span class="p">,</span> <span class="s2">"Int"</span><span class="p">,</span> <span class="s2">"current_value"</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
@@ -8108,158 +8111,134 @@ a.anchor-link {
 <th>Player</th>
 <th>Age</th>
 <th>MP</th>
-<th>Goals</th>
-<th>Assists</th>
-<th>CrdY</th>
-<th>2CrdY</th>
-<th>CrdR</th>
-<th>Min</th>
 <th>Pos</th>
+<th>Goals</th>
+<th>PasTotCmp</th>
+<th>Int</th>
+<th>current_value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<th>1322</th>
-<td>Tomá Koubek</td>
-<td>30</td>
-<td>4</td>
-<td>0</td>
-<td>0.00</td>
-<td>0.00</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>360</td>
-<td>GK</td>
-</tr>
-<tr>
-<th>2210</th>
-<td>Malang Sarr</td>
-<td>24</td>
-<td>9</td>
-<td>0</td>
-<td>0.00</td>
-<td>0.50</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>356</td>
-<td>DF</td>
-</tr>
-<tr>
-<th>1919</th>
-<td>Alfonso Pedraza</td>
-<td>26</td>
-<td>12</td>
-<td>0</td>
-<td>0.11</td>
-<td>0.11</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>836</td>
-<td>DF</td>
-</tr>
-<tr>
-<th>2064</th>
-<td>Karim Rekik</td>
-<td>28</td>
-<td>10</td>
-<td>1</td>
-<td>0.14</td>
-<td>0.14</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>664</td>
-<td>DF</td>
-</tr>
-<tr>
-<th>583</th>
-<td>Colin Dagba</td>
-<td>24</td>
-<td>12</td>
-<td>0</td>
-<td>0.00</td>
-<td>0.16</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>560</td>
-<td>DF</td>
-</tr>
-<tr>
-<th>827</th>
-<td>Jacopo Fazzini</td>
-<td>19</td>
-<td>11</td>
-<td>0</td>
-<td>0.00</td>
-<td>0.74</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>245</td>
-<td>MF</td>
-</tr>
-<tr>
-<th>173</th>
-<td>Cédric Bakambu</td>
+<th>2254</th>
+<td>Luigi Sepe</td>
 <td>31</td>
-<td>3</td>
+<td>15</td>
+<td>GK</td>
 <td>0</td>
-<td>1.43</td>
-<td>0.00</td>
+<td>24.9</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>59</td>
-<td>MF</td>
+<td>2,100,000.0</td>
 </tr>
 <tr>
-<th>2538</th>
-<td>Mikel Vesga</td>
-<td>29</td>
-<td>20</td>
-<td>2</td>
-<td>0.12</td>
-<td>0.18</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1485</td>
-<td>MF</td>
-</tr>
-<tr>
-<th>1188</th>
-<td>Daniel James</td>
+<th>1292</th>
+<td>Max Kilman</td>
 <td>25</td>
-<td>4</td>
+<td>22</td>
+<td>DF</td>
 <td>0</td>
-<td>0.00</td>
-<td>0.00</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>198</td>
-<td>FW</td>
+<td>47.8</td>
+<td>0.7</td>
+<td>14,046,333.3</td>
 </tr>
 <tr>
-<th>1057</th>
-<td>Erling Haaland</td>
+<th>1060</th>
+<td>Alexander Hack</td>
+<td>29</td>
+<td>16</td>
+<td>DF</td>
+<td>0</td>
+<td>34.6</td>
+<td>1.9</td>
+<td>1,958,333.3</td>
+</tr>
+<tr>
+<th>196</th>
+<td>Melvin Bard</td>
 <td>22</td>
 <td>20</td>
-<td>25</td>
-<td>0.16</td>
-<td>0.16</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1636</td>
-<td>FW</td>
+<td>DF</td>
+<td>0</td>
+<td>42.0</td>
+<td>1.9</td>
+<td>4,394,166.7</td>
 </tr>
 <tr>
-<th>816</th>
-<td>Romain Faivre</td>
-<td>24</td>
-<td>2</td>
+<th>323</th>
+<td>Kenji-Van Boto</td>
+<td>26</td>
+<td>1</td>
+<td>DF</td>
 <td>0</td>
-<td>0.00</td>
-<td>0.00</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>118</td>
+<td>23.0</td>
+<td>1.0</td>
+<td>2,154,611.1</td>
+</tr>
+<tr>
+<th>725</th>
+<td>Niklas Dorsch</td>
+<td>25</td>
+<td>4</td>
+<td>MF</td>
+<td>0</td>
+<td>32.2</td>
+<td>1.1</td>
+<td>652,166.7</td>
+</tr>
+<tr>
+<th>1181</th>
+<td>Lee Jae-sung</td>
+<td>30</td>
+<td>20</td>
+<td>MF</td>
+<td>6</td>
+<td>29.3</td>
+<td>0.7</td>
+<td>9,939,666.7</td>
+</tr>
+<tr>
+<th>975</th>
+<td>Papu Gómez</td>
+<td>34</td>
+<td>13</td>
+<td>MF</td>
+<td>0</td>
+<td>45.5</td>
+<td>0.5</td>
+<td>925,333.3</td>
+</tr>
+<tr>
+<th>2099</th>
+<td>Rodrigo</td>
+<td>31</td>
+<td>18</td>
 <td>FW</td>
+<td>10</td>
+<td>19.0</td>
+<td>0.2</td>
+<td>8,836,333.3</td>
+</tr>
+<tr>
+<th>1012</th>
+<td>Vincenzo Grifo</td>
+<td>29</td>
+<td>19</td>
+<td>FW</td>
+<td>11</td>
+<td>38.7</td>
+<td>0.6</td>
+<td>11,537,333.3</td>
+</tr>
+<tr>
+<th>252</th>
+<td>Wissam Ben Yedder</td>
+<td>32</td>
+<td>19</td>
+<td>FW</td>
+<td>14</td>
+<td>20.7</td>
+<td>0.2</td>
+<td>7,684,500.0</td>
 </tr>
 </tbody>
 </table>
