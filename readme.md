@@ -22,12 +22,8 @@ As we didn't know the value of the players, we trained a model (RandomForest) to
 
 Once we had the players' values, we used a genetic algorithm to obtain an optimal team according to our objective function.
 
-## Drawbacks of our approach
-
 <!-- ### Clustering
 
 - "bad" players are hard to classify. For instance, a striker who doesn't score goals might belong to the same cluster as defenders since the number of goals plays a big role in the clustering.
 
 ### Value prediction + genetic algorithm -->
-
-- poor score the value prediction using only variables common to both datasets
